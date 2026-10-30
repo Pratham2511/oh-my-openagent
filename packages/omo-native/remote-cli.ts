@@ -19,7 +19,7 @@ import {
 } from "../device-service-core/src/index.ts"
 import { resolveMemoryRoot } from "../memory-core/src/identity/layout"
 import { syncPinDir } from "../memory-core/src/sync/pin-dir"
-import { createCredentialStore, type CredentialStore, INTERACTIVE_READ_WAIT } from "../omo-opencode/src/cli/service-auth/keystore"
+import { createCredentialStore, type CredentialStore, SESSION_READ_WAIT } from "../omo-opencode/src/cli/service-auth/keystore"
 import { serviceOrigin } from "../omo-opencode/src/cli/service-auth/protocol"
 import { runAccountVerb } from "./account-cli"
 import packageJson from "./package.json" with { type: "json" }
@@ -241,7 +241,7 @@ async function inProcessAccountShow(): Promise<AccountShowResult> {
     {
       api,
       get store() {
-        store ??= createCredentialStore(api, { wait: INTERACTIVE_READ_WAIT })
+        store ??= createCredentialStore(api, { wait: SESSION_READ_WAIT })
         return store
       },
       pinDir: () => syncPinDir(resolveMemoryRoot(process.env, process.cwd())),
