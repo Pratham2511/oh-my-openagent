@@ -24,8 +24,8 @@ function lastJsonLine(stdout: string): unknown {
 }
 
 /**
- * Classifies `omo account show` by its JSON, never by the exit code alone: a signed-out answer exits 4 or 10 and a
- * signed-in one 0, while 7 is a locked keychain and 8/9 an unavailable credential store.
+ * Classifies `omo account show` by its JSON, never by the exit code alone: signed in and signed out both exit 0 and
+ * differ only in `signedIn`, while 7 is a locked keychain and 8/9 an unavailable credential store.
  */
 export function classifyAccountShow(result: AccountShowResult): AccountState {
   const value = lastJsonLine(result.stdout)

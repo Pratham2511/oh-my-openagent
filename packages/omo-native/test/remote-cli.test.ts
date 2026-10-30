@@ -114,8 +114,8 @@ describe("omo remote", () => {
 
 describe("omo remote bootstrap: omo account show first", () => {
   test.each([
-    ["signed out (exit 4)", { exitCode: 4, stdout: '{"signedIn":false}' }, "Sign in to OmO first: run omo login (or sign in from the OmO desktop app)."],
-    ["signed out after omo logout (exit 10)", { exitCode: 10, stdout: '{"signedIn":false,"signedOut":{}}' }, "Sign in to OmO first: run omo login (or sign in from the OmO desktop app)."],
+    ["signed out", { exitCode: 0, stdout: '{"signedIn":false}' }, "Sign in to OmO first: run omo login (or sign in from the OmO desktop app)."],
+    ["signed out after omo logout", { exitCode: 0, stdout: '{"signedIn":false,"signedOut":{"at":"2026-10-30T00:00:00.000Z"}}' }, "Sign in to OmO first: run omo login (or sign in from the OmO desktop app)."],
     ["a locked keychain (exit 7)", { exitCode: 7, stdout: '{"keychain":"locked"}' }, "Your OmO sign-in is behind a locked keychain. Unlock it, then try again."],
     ["an unavailable store (exit 9)", { exitCode: 9, stdout: '{"error":"store-unavailable"}' }, "The credential store holding your OmO sign-in is not available right now. Try again in a moment."],
     ["output that is not JSON", { exitCode: 0, stdout: "garbage" }, "Could not read your OmO sign-in (omo account show printed no JSON). Sign in again with omo login."],
