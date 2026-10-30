@@ -2,6 +2,7 @@ import { homedir } from "node:os"
 import { join } from "node:path"
 import { SOCKET_FILE } from "./local-api/access.ts"
 import { connectLocalApi, type ConnectOptions, type LocalApiClient } from "./local-api/client.ts"
+import { LocalApiError } from "./local-api/errors.ts"
 import { ENDPOINT_FILE } from "./local-api/transport.ts"
 import type { ListingResult, ListingRevision, ReadPage } from "./local-api/client-assembly.ts"
 import type {
@@ -50,6 +51,9 @@ export function deviceServiceEndpointPath(stateDir: string, platform: NodeJS.Pla
   return join(stateDir, platform === "win32" ? ENDPOINT_FILE : SOCKET_FILE)
 }
 
+/** How an attach ended: a service-reported reason, the connection closing, or this client's own detach. */
+export type AttachEnd = DetachReason | "closed" | "detached"
+
 export type RemoteAttachEvent =
   | { readonly kind: "pending"; readonly reason: AttachPendingReason }
   | { readonly kind: "snapshot"; readonly snapshot: SnapshotBody }
@@ -64,11 +68,12 @@ export type RemoteAttach = {
   /** The first snapshot, inline or reassembled from its blob; a later re-attach replaces it through `onEvent`. */
   readonly snapshot: Promise<SnapshotBody>
   /** Settles with the reason once the attach ends, whoever ended it. */
-  readonly detached: Promise<DetachReason | "closed">
+  readonly detached: Promise<AttachEnd>
   /** Every event of this attach, in order, including those that arrived before the listener was added. */
   readonly onEvent: (listener: (event: RemoteAttachEvent) => void) => () => void
   /** One page of older history; entries too large to fetch are marked `too_large`. */
   readonly read: (options?: { readonly before?: string; readonly tail?: number }) => Promise<ReadPage>
+  /** Detaches; afterwards this attach holds no subscription on the connection and `detached` settles "detached". */
   readonly detach: () => Promise<void>
 }
 
@@ -142,20 +147,25 @@ function openAttach(client: LocalApiClient, device: string, sessionId: string): 
     rejectSnapshot = reject
   })
   snapshot.catch(() => {})
-  let resolveDetached!: (reason: DetachReason | "closed") => void
-  const detached = new Promise<DetachReason | "closed">(resolve => {
+  let resolveDetached!: (reason: AttachEnd) => void
+  const detached = new Promise<AttachEnd>(resolve => {
     resolveDetached = resolve
   })
+  let ended = false
+  const finish = (reason: AttachEnd) => {
+    if (ended) return
+    ended = true
+    stop()
+    listeners.clear()
+    rejectSnapshot(new Error(`the attach ended before its snapshot: ${reason}`))
+    resolveDetached(reason)
+  }
   const deliver = (event: AttachEvent) => {
     const remote = toRemote(event)
     history.push(remote)
     if (remote.kind === "snapshot") resolveSnapshot(remote.snapshot)
-    if (remote.kind === "detached") {
-      rejectSnapshot(new Error(`the attach ended before its snapshot: ${remote.reason}`))
-      resolveDetached(remote.reason)
-      stop()
-    }
     for (const listener of [...listeners]) listener(remote)
+    if (remote.kind === "detached") finish(remote.reason)
   }
   const stop = client.onEvent(event => {
     const mine = attachEvent(event)
@@ -163,10 +173,7 @@ function openAttach(client: LocalApiClient, device: string, sessionId: string): 
     if (handle === undefined) early.push(mine)
     else if (mine.attach === handle) deliver(mine)
   })
-  void client.closed.then(() => {
-    rejectSnapshot(new Error("the device service connection closed"))
-    resolveDetached("closed")
-  })
+  void client.closed.then(() => finish("closed"))
   return client.request("session.attach", { device, session_id: sessionId }).then(
     ({ attach }) => {
       handle = attach
@@ -188,7 +195,12 @@ function openAttach(client: LocalApiClient, device: string, sessionId: string): 
             ...(options.tail === undefined ? {} : { tail: options.tail }),
           }),
         detach: async () => {
-          await client.request("session.detach", { attach })
+          try {
+            await client.request("session.detach", { attach })
+          } catch (error) {
+            if (!(error instanceof LocalApiError && error.code === "not_attached")) throw error
+          }
+          finish("detached")
         },
       }
     },
