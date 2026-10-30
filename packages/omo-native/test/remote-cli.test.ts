@@ -24,7 +24,9 @@ const privateDir = (): string => {
   return dir
 }
 
-async function run(args: readonly string[], stateDir?: string) {
+const SIGNED_IN = { exitCode: 0, stdout: JSON.stringify({ signedIn: true, device: { id: "dev-self", name: "This Mac" }, refreshState: "ok" }) }
+
+async function run(args: readonly string[], stateDir?: string, account = SIGNED_IN) {
   let dir = stateDir
   if (dir === undefined) {
     const owner = await startFakeOwner({ stateDir: privateDir(), world: defaultWorld() })
@@ -36,6 +38,7 @@ async function run(args: readonly string[], stateDir?: string) {
   const target = dir
   const code = await runRemoteVerb(
     {
+      accountShow: async () => account,
       stateDir: target,
       connect: () => connectDeviceService({ version: "5.1.52", stateDir: target }),
       now: () => NOW,
@@ -109,14 +112,31 @@ describe("omo remote", () => {
   })
 })
 
+describe("omo remote bootstrap: omo account show first", () => {
+  test.each([
+    ["signed out (exit 4)", { exitCode: 4, stdout: '{"signedIn":false}' }, "Sign in to OmO first: run omo login (or sign in from the OmO desktop app)."],
+    ["signed out after omo logout (exit 10)", { exitCode: 10, stdout: '{"signedIn":false,"signedOut":{}}' }, "Sign in to OmO first: run omo login (or sign in from the OmO desktop app)."],
+    ["a locked keychain (exit 7)", { exitCode: 7, stdout: '{"keychain":"locked"}' }, "Your OmO sign-in is behind a locked keychain. Unlock it, then try again."],
+    ["an unavailable store (exit 9)", { exitCode: 9, stdout: '{"error":"store-unavailable"}' }, "The credential store holding your OmO sign-in is not available right now. Try again in a moment."],
+    ["output that is not JSON", { exitCode: 0, stdout: "garbage" }, "Could not read your OmO sign-in (omo account show printed no JSON). Sign in again with omo login."],
+    ["signedIn true with a failing exit", { exitCode: 1, stdout: '{"signedIn":true,"device":{"id":"d","name":"n"}}' }, "Could not read your OmO sign-in (omo account show answered an unexpected shape (exit 1)). Sign in again with omo login."],
+  ])("%s stops before contacting the service", async (_label, account, notice) => {
+    const owner = await startFakeOwner({ stateDir: privateDir(), world: defaultWorld() })
+    owners.push(owner)
+    const { code, err, out } = await run(["status"], owner.stateDir, account)
+    expect([code, err, out]).toEqual([REMOTE_EXIT.unavailable, [notice], []])
+  })
+})
+
 describe("omo remote attach", () => {
-  async function attach(target: readonly string[], running = true) {
+  async function attach(target: readonly string[], running = true, account = SIGNED_IN) {
     const owner = await startFakeOwner({ stateDir: privateDir(), world: defaultWorld() })
     owners.push(owner)
     if (!running) await owner.stop()
     const err: string[] = []
     const prepared = await prepareRemoteAttach(
       {
+        accountShow: async () => account,
         stateDir: owner.stateDir,
         connect: () => connectDeviceService({ version: "5.1.52", stateDir: owner.stateDir }),
         now: () => NOW,
@@ -144,6 +164,11 @@ describe("omo remote attach", () => {
       expect(err[0]).toStartWith("usage: omo remote attach <device>/<session>")
     },
   )
+
+  test("checks omo account show before it looks for the service", async () => {
+    const { prepared, err } = await attach([`${PEER}/${SESSION_ID}`], true, { exitCode: 4, stdout: '{"signedIn":false}' })
+    expect([prepared, err]).toEqual([REMOTE_EXIT.unavailable, ["Sign in to OmO first: run omo login (or sign in from the OmO desktop app)."]])
+  })
 
   test("names a stopped service and an unknown session without a stack", async () => {
     const stopped = await attach([`${PEER}/${SESSION_ID}`], false)
