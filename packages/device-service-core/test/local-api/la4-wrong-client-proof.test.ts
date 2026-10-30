@@ -47,7 +47,7 @@ describe("LA4 a wrong client_proof is refused", () => {
     await peer.closed;
   });
 
-  test("a client_proof computed for port A is refused by the owner on port B (a relay through a squatted old port)", async () => {
+  test("a client_proof computed for port A is refused by the owner on port B (a forwarder through a squatted old port)", async () => {
     const owner = await startOwner();
     const peer = await rawConnect(owner.stateDir);
     peer.send(helloFrom(OMO));

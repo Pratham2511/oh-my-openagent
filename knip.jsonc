@@ -60,8 +60,8 @@
       ]
     },
     "preExistingExports": {
-      // Vendored device-service local API (packages/device-service-core/PIN.json, changed only by its sync script): these
-      // exports serve the device service's own server side and its upstream barrel, never omo; every other export stays checked.
+      // The device-service local API keeps its server-side halves beside the client (the reference service its tests run
+      // against, the Windows DACL writer): these exports serve that side, never omo's commands; every other export stays checked.
       "packages/device-service-core/src/local-api/access.ts": ["applyExactDacl", "verifyExactDacl", "windowsSecureFile", "TOKEN_FILE", "TOKEN_BYTES", "NONCE_BYTES"],
       "packages/device-service-core/src/local-api/chunking.ts": ["pageListing", "checkCommandText", "UploadAssembler", "uploadParts"],
       "packages/device-service-core/src/local-api/dacl.ts": ["CURRENT_USER_SID_SCRIPT"],
@@ -2660,7 +2660,6 @@
         "src/{index,cli,main}.{js,cjs,mjs,jsx,ts,cts,mts,tsx}",
         "**/*.{test,spec}.{js,cjs,mjs,jsx,ts,cts,mts,tsx}",
         "**/*.test-d.ts",
-        "scripts/sync-local-api.ts",
         "test/local-api/support.ts",
         "test/local-api/support-windows.ts",
         "test/local-api/conformance/*.ts",

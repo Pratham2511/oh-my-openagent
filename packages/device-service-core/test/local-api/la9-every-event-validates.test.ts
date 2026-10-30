@@ -194,7 +194,7 @@ const invalid: readonly (readonly [string, unknown])[] = [
   ],
   [
     "status in an unknown state",
-    { type: "event", kind: "status.changed", status: { ...world.status, state: "relaying" } },
+    { type: "event", kind: "status.changed", status: { ...world.status, state: "forwarding" } },
   ],
 ];
 

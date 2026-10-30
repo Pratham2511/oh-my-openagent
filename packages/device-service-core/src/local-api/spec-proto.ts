@@ -1,6 +1,4 @@
-// The shared session-contract limits the local API v1 client checks against, pinned from the spec files named in
-// ../../PIN.json ("spec"). scripts/sync-local-api.ts re-reads each value from those files at the pinned commit and
-// refuses to sync when one differs, so this file cannot drift from the contract silently.
+// The session-contract limits local API v1 checks against (docs/local-api.md: message and blob limits, field bounds).
 export const SESSION_BLOB_MAX = 16_777_216;
 export const SESSION_COMMAND_TEXT_MAX_CHARS = 1_000_000;
 export const SESSION_COMMAND_TEXT_MAX_BYTES = 3_000_000;
