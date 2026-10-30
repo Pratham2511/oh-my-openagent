@@ -4,6 +4,7 @@ import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { connectDeviceService, deviceServiceStateDir, type DeviceService, LocalApiError, type RemoteAttachEvent } from "../src/index.ts"
 import { posixSecureFile, writeToken } from "../src/local-api/access.ts"
+import { connectLocalApi } from "../src/local-api/client.ts"
 import { startFakeOwner, type FakeOwner } from "./local-api/conformance/fake-owner.ts"
 import { defaultWorld, OFFLINE_PEER, PEER, SESSION_ID, type World } from "./local-api/conformance/world.ts"
 
@@ -145,6 +146,41 @@ describe("DeviceService", () => {
       { entry_id: "e-2", too_large: true, bytes: 20_000_000 },
     ])
     expect(page.next_before).toBeNull()
+    await attach.detach()
+  })
+
+  test("detach releases the attach's subscription, settles detached, and tolerates a second detach", async () => {
+    const owner = await startFakeOwner({ stateDir: stateDir(), world: defaultWorld() })
+    owners.push(owner)
+    let live = 0
+    const service = await connectDeviceService({
+      version: "5.1.52",
+      stateDir: owner.stateDir,
+      connect: async options => {
+        const client = await connectLocalApi(options)
+        return {
+          ...client,
+          onEvent: listener => {
+            live++
+            const stop = client.onEvent(listener)
+            let stopped = false
+            return () => {
+              if (!stopped) live--
+              stopped = true
+              stop()
+            }
+          },
+        }
+      },
+    })
+    services.push(service)
+    const before = live
+    const attach = await service.attach(PEER, SESSION_ID)
+    await attach.snapshot
+    expect(live).toBe(before + 1)
+    await attach.detach()
+    expect(await within(attach.detached, "detached to settle")).toBe("detached")
+    expect(live).toBe(before)
     await attach.detach()
   })
 
