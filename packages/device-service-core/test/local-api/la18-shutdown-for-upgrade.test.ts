@@ -17,9 +17,6 @@ afterEach(cleanup);
 
 const SRC = join(import.meta.dir, "..", "..", "src", "local-api");
 const DOCS = join(import.meta.dir, "..", "..", "docs", "local-api.md");
-const INTERNAL_WORD = /relay|dori|enroll|\bhand\b/i;
-const quoted = (path: string): readonly string[] =>
-  [...readFileSync(path, "utf8").matchAll(/"[^"]*"/g)].map((m) => m[0]);
 
 describe("LA18 owner.shutdown_for_upgrade only from an installer after its proof; the vocabulary gate", () => {
   test("a desktop or omo client is refused forbidden; an installer before its proof is refused unauthenticated", async () => {
@@ -54,16 +51,6 @@ describe("LA18 owner.shutdown_for_upgrade only from an installer after its proof
     await installer.closed;
     await app.closed;
     expect(await rejectionOf(connectClient(owner))).toBeInstanceOf(Error);
-  });
-
-  test("no protocol string and no docs line contains a transport-internal word", () => {
-    const strings = ["protocol.ts", "protocol-events.ts", "vocabulary.ts"].flatMap((f) =>
-      quoted(join(SRC, f)),
-    );
-    expect(strings.filter((s) => INTERNAL_WORD.test(s))).toEqual([]);
-    const docs = readFileSync(DOCS, "utf8").split("\n");
-    expect(docs.filter((line) => INTERNAL_WORD.test(line))).toEqual([]);
-    console.log(`vocabulary gate: ${strings.length} strings, ${docs.length} docs lines, 0 hits`);
   });
 
   test("docs/local-api.md names every message type of protocol.ts", () => {

@@ -127,7 +127,7 @@ describe("LA3 a squatting server that cannot prove the token", () => {
     expect(cancelled).toBe(1);
   });
 
-  test("a client that reached the owner through another port (a relay) refuses its server_proof", async () => {
+  test("a client that reached the owner through another port (a forwarder) refuses its server_proof", async () => {
     const owner = await startOwner();
     const portA = 49_152;
     const transport = async (): Promise<Transport> => {

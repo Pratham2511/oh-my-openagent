@@ -41,7 +41,7 @@ const decoded = (value: string, bytes: number, what: string): Uint8Array => {
 
 // The endpoint both proofs are bound to: `tcp:<port>` for the Windows loopback listener (the owner's listening port;
 // for a client, the port it read from endpoint.json and connected to), `unix` for the POSIX socket in the private
-// state dir. A relay through a squatted old port proves the wrong endpoint on both sides.
+// state dir. A forwarder through a squatted old port proves the wrong endpoint on both sides.
 export const UNIX_ENDPOINT = "unix";
 export const tcpEndpoint = (port: number): string => `tcp:${port}`;
 
