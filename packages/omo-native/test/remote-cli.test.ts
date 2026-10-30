@@ -6,7 +6,7 @@ import { join } from "node:path"
 import { connectDeviceService } from "../../device-service-core/src/index.ts"
 import { startFakeOwner, type FakeOwner } from "../../device-service-core/test/local-api/conformance/fake-owner.ts"
 import { defaultWorld, OFFLINE_PEER, PEER, SESSION_ID } from "../../device-service-core/test/local-api/conformance/world.ts"
-import { ago, REMOTE_EXIT, runRemoteVerb } from "../remote-cli"
+import { ago, prepareRemoteAttach, REMOTE_EXIT, runRemoteVerb } from "../remote-cli"
 
 const NOW = 1_790_000_400_000
 const owners: FakeOwner[] = []
@@ -106,6 +106,51 @@ describe("omo remote", () => {
     const stopped = await run(["status"], privateDir())
     expect(stopped.code).toBe(REMOTE_EXIT.unavailable)
     expect(stopped.err).toEqual(["The OmO device service is not running on this device."])
+  })
+})
+
+describe("omo remote attach", () => {
+  async function attach(target: readonly string[], running = true) {
+    const owner = await startFakeOwner({ stateDir: privateDir(), world: defaultWorld() })
+    owners.push(owner)
+    if (!running) await owner.stop()
+    const err: string[] = []
+    const prepared = await prepareRemoteAttach(
+      {
+        stateDir: owner.stateDir,
+        connect: () => connectDeviceService({ version: "5.1.52", stateDir: owner.stateDir }),
+        now: () => NOW,
+        output: () => {},
+        error: line => err.push(line),
+      },
+      target,
+    )
+    return { prepared, err }
+  }
+
+  test("attaches through the service and hands the engine its attach TUI arguments", async () => {
+    const { prepared } = await attach([`${PEER}/${SESSION_ID}`])
+    if (typeof prepared === "number") throw new Error(`attach failed with exit ${prepared}`)
+    const [flag, socket, sessionFlag, ref, extensions] = prepared.engineArgs
+    expect([flag, sessionFlag, ref, extensions]).toEqual(["--attach", "--session", SESSION_ID, "--no-extensions"])
+    expect(socket).toMatch(/[\\/]t-[0-9a-f]{16}\.sock$/)
+  })
+
+  test.each([[[]], [["no-slash"]], [["/session"]], [["device/"]], [[`${PEER}/${SESSION_ID}`, "extra"]]])(
+    "refuses the target %p as usage",
+    async target => {
+      const { prepared, err } = await attach(target)
+      expect(prepared).toBe(REMOTE_EXIT.usage)
+      expect(err[0]).toStartWith("usage: omo remote attach <device>/<session>")
+    },
+  )
+
+  test("names a stopped service and an unknown session without a stack", async () => {
+    const stopped = await attach([`${PEER}/${SESSION_ID}`], false)
+    expect([stopped.prepared, stopped.err]).toEqual([REMOTE_EXIT.unavailable, ["The OmO device service is not running on this device."]])
+    const unknown = await attach([`${PEER}/bm8tc3VjaC1zZXNzaW9u`])
+    expect(unknown.prepared).toBe(REMOTE_EXIT.failed)
+    expect(unknown.err[0]).toStartWith("omo remote: ")
   })
 })
 

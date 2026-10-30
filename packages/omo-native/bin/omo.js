@@ -3,7 +3,7 @@ import "./lib/private-fds.js"
 import { fileURLToPath } from "node:url"
 import { ensureBunBinShim } from "./lib/bun-bin-shim.js"
 import { maybeReexecUnderBun } from "./lib/bun-runtime.js"
-import { runLauncher } from "./lib/launcher.js"
+import { runAttachTui, runLauncher } from "./lib/launcher.js"
 import { removeLegacyServiceCredentials } from "./lib/legacy-service-credentials.js"
 import { runSetup } from "./lib/setup-import.js"
 
@@ -32,6 +32,11 @@ try {
     } else if (process.argv[2] === "account") {
       const { runAccountCommand } = await import("./lib/service-auth.generated.js")
       await runAccountCommand(process.argv.slice(2))
+    } else if (process.argv[2] === "remote" && process.argv[3] === "attach") {
+      const { runRemoteAttachCommand } = await import("./lib/service-auth.generated.js")
+      const engineArgs = await runRemoteAttachCommand(process.argv.slice(2))
+      if (engineArgs) await runAttachTui(engineArgs)
+      process.exit()
     } else if (process.argv[2] === "remote") {
       const { runRemoteCommand } = await import("./lib/service-auth.generated.js")
       await runRemoteCommand(process.argv.slice(2))
