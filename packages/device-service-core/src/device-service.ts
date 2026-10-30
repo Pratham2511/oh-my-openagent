@@ -90,7 +90,7 @@ export type DeviceService = {
 }
 
 export type ConnectDeviceServiceOptions = {
-  /** The omo version this client reports in its hello. */
+  /** The version of this omo build, reported to the service in its hello. */
   readonly version: string
   readonly stateDir?: string
   /** Test seam: the local API connection (the vendored v1 client by default). */

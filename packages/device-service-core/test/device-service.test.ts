@@ -32,6 +32,12 @@ const stateDir = (): string => {
   return dir
 }
 
+function firstSession(world: World) {
+  const session = world.sessions[0]
+  if (session === undefined) throw new Error("the default world has no session")
+  return session
+}
+
 async function serviceFor(world: World = defaultWorld()): Promise<{ owner: FakeOwner; service: DeviceService }> {
   const owner = await startFakeOwner({ stateDir: stateDir(), world })
   owners.push(owner)
@@ -123,7 +129,7 @@ describe("DeviceService", () => {
   test("attach delivers the snapshot, then records, reads history pages and detaches", async () => {
     const { service } = await serviceFor()
     const attach = await service.attach(PEER, SESSION_ID)
-    expect(await attach.snapshot).toEqual(defaultWorld().sessions[0]!.snapshot)
+    expect(await attach.snapshot).toEqual(firstSession(defaultWorld()).snapshot)
     const events: RemoteAttachEvent["kind"][] = []
     const recordsSeen = new Promise<void>(resolve => {
       attach.onEvent(event => {
@@ -144,7 +150,7 @@ describe("DeviceService", () => {
 
   test("a snapshot too large for one line arrives as a verified blob", async () => {
     const world = defaultWorld()
-    const session = world.sessions[0]!
+    const session = firstSession(world)
     const big = "x".repeat(700_000)
     const snapshot = { ...session.snapshot, entries: [{ id: "e-3", type: "message", text: big }] }
     const { service } = await serviceFor({ ...world, sessions: [{ ...session, snapshot }] })
