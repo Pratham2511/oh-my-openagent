@@ -29,7 +29,7 @@ async function fixture(stepCount = 2, createRunId?: () => string | Promise<strin
     identity,
     config: { stepCount, onCompaction: true },
     now: () => new Date("2026-08-10T00:00:00.000Z"),
-    launcherIdentity: async () => ({ pid: 4242, hostname: "fixture-host", processStart: "fixture-start" }),
+    launcherIdentity: async () => ({ pid: 4242, hostname: "fixture-host", hostId: "machine-a", processStart: "fixture-start" }),
     getJournal: async (id) => {
       const found = journals.get(id)
       if (!found) throw new Error(`missing journal: ${id}`)
@@ -180,6 +180,7 @@ describe("persisted reflection reservation", () => {
       reservedAt: "2026-08-10T00:00:00.000Z",
       launcherPid: 4242,
       launcherHostname: "fixture-host",
+      launcherHostId: "machine-a",
       launcherProcessStart: "fixture-start",
     })
     expect(persisted).toMatchObject(runOf(result))

@@ -1,4 +1,6 @@
 import { Buffer } from "node:buffer"
+import type { ReservedRun } from "./reserved-run"
+export type { ReservedRun } from "./reserved-run"
 import {
   REFLECTION_SNAPSHOT_MAX_BYTES,
   countCompletedSteps,
@@ -43,15 +45,6 @@ export interface ReflectionRequest {
   readonly focus?: string
   readonly recentN?: number
   readonly targetDoc?: string
-}
-
-export interface ReservedRun {
-  readonly runId: string
-  readonly request: ReflectionRequest
-  readonly reservedAt?: string
-  readonly launcherPid?: number
-  readonly launcherHostname?: string
-  readonly launcherProcessStart?: string | null
 }
 
 export interface ReservationState {

@@ -2,7 +2,7 @@
 // gone (the post-#7095 repair state reconcile now reclaims automatically at session start).
 
 import { existsSync, readFile } from "@oh-my-opencode/memory-core/fs"
-import { hostname } from "node:os"
+import { isLocalReflectionHost, type ReflectionHostProbe } from "@oh-my-opencode/memory-core"
 import { join } from "node:path"
 
 import type { DoctorCheck } from "./doctor-checks"
@@ -12,7 +12,7 @@ const GHOST_REMEDIATION = "a current runtime reclaims it at session start; on ol
 
 export async function checkGhostReservation(
   identityPaths: MemoryCommandIdentity["identityPaths"],
-  deps: { readonly isProcessAlive?: (pid: number) => boolean },
+  deps: ReflectionHostProbe & { readonly isProcessAlive?: (pid: number) => boolean },
 ): Promise<DoctorCheck> {
   const activePath = join(identityPaths.reflection, "active.lock")
   if (!existsSync(activePath)) return { name: "reservation", level: "ok", detail: "no active reservation" }
@@ -34,7 +34,8 @@ export async function checkGhostReservation(
     return { name: "reservation", level: "warn", detail: `ghost active reservation ${runId}: launcher identity missing (pre-stamping legacy); ${GHOST_REMEDIATION}` }
   }
   if (Date.now() - reservedAtMs <= 60_000) return { name: "reservation", level: "ok", detail: `reservation ${runId} is recent` }
-  if (launcherHostname !== hostname()) return { name: "reservation", level: "ok", detail: `reservation ${runId} is owned by ${launcherHostname}` }
+  const launcherHostId = typeof record.launcherHostId === "string" ? record.launcherHostId : undefined
+  if (!(await isLocalReflectionHost({ launcherHostname, launcherHostId }, deps))) return { name: "reservation", level: "ok", detail: `reservation ${runId} is owned by ${launcherHostname}` }
   const alive = (deps.isProcessAlive ?? defaultIsProcessAlive)(launcherPid)
   if (alive) return { name: "reservation", level: "ok", detail: `reservation ${runId} launcher pid ${launcherPid} is alive` }
   return {

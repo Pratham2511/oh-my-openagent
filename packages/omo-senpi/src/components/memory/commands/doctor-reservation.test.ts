@@ -36,6 +36,22 @@ const GHOST_ACTIVE = {
 }
 
 describe("checkGhostReservation", () => {
+  test.each([
+    { name: "same hostname on another machine", recorded: "machine-a", current: "machine-b", host: GHOST_ACTIVE.launcherHostname, level: "ok" },
+    { name: "same machine after roaming", recorded: "machine-a", current: "machine-a", host: "Mac-424", level: "warn" },
+    { name: "legacy exact hostname", recorded: undefined, current: "machine-a", host: GHOST_ACTIVE.launcherHostname, level: "warn" },
+    { name: "unavailable machine lookup", recorded: "machine-a", current: null, host: GHOST_ACTIVE.launcherHostname, level: "warn" },
+  ])("#given $name #then doctor reports $level without probing foreign PIDs", async ({ recorded, current, host, level }) => {
+    const paths = await identityPathsWithActive({ ...GHOST_ACTIVE, launcherHostId: recorded })
+    let probes = 0
+    const check = await checkGhostReservation(paths, {
+      hostname: () => host, hostId: async () => current,
+      isProcessAlive: () => { probes += 1; return false },
+    })
+    expect(check.level).toBe(level)
+    expect(probes).toBe(level === "ok" ? 0 : 1)
+  })
+
   test("#given no active.lock #then the check is ok", async () => {
     const paths = await identityPathsWithActive(undefined)
     expect(await checkGhostReservation(paths, {})).toMatchObject({ name: "reservation", level: "ok" })

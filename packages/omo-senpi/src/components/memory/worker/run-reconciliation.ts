@@ -5,6 +5,7 @@ import { join } from "node:path"
 
 import {
   LockContentionError,
+  type ReflectionHostProbe,
   type MemoryIdentity,
   type ProcessLiveness,
   type ReservedRun,
@@ -34,14 +35,13 @@ import { sweepStrandedRunTemporaries } from "./run-temporaries"
 
 export type ReflectionRunReconcileResult = Pick<ReservationRunResult, "runId" | "outcome">
 
-export interface ReflectionRunReconciliationOptions {
+export interface ReflectionRunReconciliationOptions extends ReflectionHostProbe {
   readonly identity: MemoryIdentity
   readonly reservation: ReservationStatePort
   /** Cancels observation only; never turns a live run into a terminal outcome. */
   readonly signal?: AbortSignal
   readonly launch?: (run: ReservedRun) => void
   readonly now?: () => number
-  readonly hostname?: () => string
   readonly getPidLiveness?: (pid: number) => ProcessLiveness
   readonly getProcessStartIdentity?: (pid: number) => Promise<string | null>
   readonly waitForOutcome?: (path: string, deadlineAt: number, signal?: AbortSignal) => Promise<SentinelWaitResult>

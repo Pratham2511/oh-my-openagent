@@ -5,10 +5,12 @@ import { dirname, join } from "node:path"
 import { mkdir, readFile, readdir, rename, unlink, writeFile } from "../fs/resilient"
 import { getProcessStartIdentity } from "../locks"
 import type { ReflectionRequest, ReservedRun } from "./machine"
+import { getReflectionHostId } from "./host-identity"
 
 export interface ReflectionLauncherIdentity {
   readonly pid: number
   readonly hostname: string
+  readonly hostId?: string | null
   readonly processStart: string | null
 }
 
@@ -75,6 +77,7 @@ export async function currentLauncherIdentity(): Promise<ReflectionLauncherIdent
   return {
     pid: process.pid,
     hostname: hostname(),
+    hostId: await getReflectionHostId(),
     processStart: await getProcessStartIdentity(process.pid),
   }
 }

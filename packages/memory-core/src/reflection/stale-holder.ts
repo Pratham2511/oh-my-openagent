@@ -6,11 +6,11 @@
 // the publish claimant, if any, is gone, and the run recorded a valid outcome. Anything that cannot be
 // proven is "stuck", never "dead". Each rule carries a `rule:` tag named by its test.
 
-import { hostname as readHostname } from "node:os"
 import { join } from "node:path"
 
 import { readFile } from "../fs/resilient"
 import { getPidLiveness, getProcessStartIdentity, startIdentitiesComparable, type ProcessLiveness } from "../locks/process-identity"
+import { isLocalReflectionHost, type ReflectionHostProbe } from "./host-identity"
 
 export type ReflectionLockVerdict =
   | { readonly state: "none" }
@@ -18,9 +18,8 @@ export type ReflectionLockVerdict =
   | { readonly state: "dead"; readonly runId: string }
   | { readonly state: "stuck"; readonly runId: string; readonly reason: string }
 
-export interface ReflectionLockProbe {
+export interface ReflectionLockProbe extends ReflectionHostProbe {
   readonly readText?: (path: string) => Promise<string>
-  readonly hostname?: () => string
   readonly getPidLiveness?: (pid: number) => ProcessLiveness
   readonly getProcessStartIdentity?: (pid: number) => Promise<string | null>
 }
@@ -97,7 +96,8 @@ export async function classifyReflectionLockHolder(
   const launcherPid = typeof fields.launcherPid === "number" ? fields.launcherPid : undefined
   const launcherHostname = typeof fields.launcherHostname === "string" ? fields.launcherHostname : undefined
   if (launcherPid === undefined || launcherHostname === undefined) return stuck(runId, "its launcher identity is missing") // rule:launcher-identity
-  if (launcherHostname !== (probe.hostname ?? readHostname)()) return stuck(runId, `it is owned by host ${launcherHostname}, which cannot be checked from here`) // rule:other-host
+  const launcherHostId = typeof fields.launcherHostId === "string" ? fields.launcherHostId : undefined
+  if (!(await isLocalReflectionHost({ launcherHostname, launcherHostId }, probe))) return stuck(runId, `it is owned by host ${launcherHostname}, which cannot be checked from here`) // rule:other-host
   const launcher = await launcherLiveness(launcherPid, fields.launcherProcessStart, probe)
   if (launcher === "alive") return { state: "live", runId } // rule:launcher-alive
   if (launcher === "unknown") return stuck(runId, `launcher pid ${launcherPid} could not be checked`) // rule:launcher-unknown
