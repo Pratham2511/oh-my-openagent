@@ -1,0 +1,412 @@
+{
+  "source": "sisyphuslabs/omo-relay-daemon",
+  "commit": "c6d5c7d1da690ff90e5393f91738be6a025677eb",
+  "excluded": {
+    "packages/local-api/src/index.ts": "the package barrel; omo imports the modules it uses directly",
+    "packages/local-api/test/vocabulary-drift.test.ts": "compares the vocabulary with the whole spec package, which is not vendored; the sync checks the constants the client uses"
+  },
+  "spec": {
+    "vendor/relay-spec/packages/relay-proto/src/session-blob.ts": "deec85ed0e095187aaeb3db815a9ff9a0470a68ff6893746a7c0883903b99c7d",
+    "vendor/relay-spec/packages/relay-proto/src/session-command.ts": "10a44e2bb9216386a194d6d8412415ce1c343c8165b181209af5d2d9352dd91d",
+    "vendor/relay-spec/packages/relay-proto/src/session-inner.ts": "71f0cd8f4bc18f919168ab1941fcc566b6ffb951f7857062527e879e98f06b11",
+    "vendor/relay-spec/packages/relay-proto/src/session-read.ts": "e7fb29989c87df1cf96fa0cdccbf3958324ec93f713e76118c882b6fff935cb2",
+    "vendor/relay-spec/packages/relay-proto/src/session-summary.ts": "d7a5e5239dcc5300b0d68bf93cac436d7b2bdac589e364ce919cbf61c478e903"
+  },
+  "files": {
+    "docs/local-api.md": {
+      "upstream": "docs/local-api.md",
+      "upstream_sha256": "fd4f3c217041287cdf2a93c56e023ae7d75d520849f636bf6632d7a17bbf3fc5",
+      "sha256": "fd4f3c217041287cdf2a93c56e023ae7d75d520849f636bf6632d7a17bbf3fc5"
+    },
+    "src/local-api/access.ts": {
+      "upstream": "packages/local-api/src/access.ts",
+      "upstream_sha256": "bb1b39e58c9379752fab18df9643b657669fd490a49cd60c2308890a273bee23",
+      "sha256": "bb1b39e58c9379752fab18df9643b657669fd490a49cd60c2308890a273bee23"
+    },
+    "src/local-api/chunking.ts": {
+      "upstream": "packages/local-api/src/chunking.ts",
+      "upstream_sha256": "06d5db1d86942298b50f8fd9c3b3855d4a244b3c6a9131b24b2da024c458e626",
+      "sha256": "06d5db1d86942298b50f8fd9c3b3855d4a244b3c6a9131b24b2da024c458e626"
+    },
+    "src/local-api/client-assembly.ts": {
+      "upstream": "packages/local-api/src/client-assembly.ts",
+      "upstream_sha256": "7af870bc912dbf282017fb57e4d2a72c117e197d9a8ed1e9ebec54d1494c077f",
+      "sha256": "7af870bc912dbf282017fb57e4d2a72c117e197d9a8ed1e9ebec54d1494c077f"
+    },
+    "src/local-api/client-connection.ts": {
+      "upstream": "packages/local-api/src/client-connection.ts",
+      "upstream_sha256": "ae198d7569f4c680e34db749f3043471a29ce4525979d5a8c1e15c574eb52e3d",
+      "sha256": "ae198d7569f4c680e34db749f3043471a29ce4525979d5a8c1e15c574eb52e3d"
+    },
+    "src/local-api/client-listing.ts": {
+      "upstream": "packages/local-api/src/client-listing.ts",
+      "upstream_sha256": "c214e5c12a2fb94737532cdbad42400d2a7c68479da28106e745a8e8f464f2ed",
+      "sha256": "c214e5c12a2fb94737532cdbad42400d2a7c68479da28106e745a8e8f464f2ed"
+    },
+    "src/local-api/client.ts": {
+      "upstream": "packages/local-api/src/client.ts",
+      "upstream_sha256": "4c5244138d195ab9a3d5d933c00994f62b770c520d6d3907f6e6e7909ea69a86",
+      "sha256": "4c5244138d195ab9a3d5d933c00994f62b770c520d6d3907f6e6e7909ea69a86"
+    },
+    "src/local-api/dacl.ts": {
+      "upstream": "packages/local-api/src/dacl.ts",
+      "upstream_sha256": "fddc523fa42381ac18e67ec63270c343af7e6e9d3a661fb9d1016002febafcda",
+      "sha256": "fddc523fa42381ac18e67ec63270c343af7e6e9d3a661fb9d1016002febafcda"
+    },
+    "src/local-api/errors.ts": {
+      "upstream": "packages/local-api/src/errors.ts",
+      "upstream_sha256": "b462d13567d1eb7b418e39c1ef27eb71b437352e10494f99bf497516778ec56a",
+      "sha256": "b462d13567d1eb7b418e39c1ef27eb71b437352e10494f99bf497516778ec56a"
+    },
+    "src/local-api/framing.ts": {
+      "upstream": "packages/local-api/src/framing.ts",
+      "upstream_sha256": "8e971837efcbe8bf899d5a40a89685025a0f0c464101582074f2909dbef773f7",
+      "sha256": "8e971837efcbe8bf899d5a40a89685025a0f0c464101582074f2909dbef773f7"
+    },
+    "src/local-api/limits.ts": {
+      "upstream": "packages/local-api/src/limits.ts",
+      "upstream_sha256": "55d25cb4d0d30ffc792c3ea75dd1a037180b5914ceed7a6ac6852d05aeeeede2",
+      "sha256": "34da1256e7965d43db39d73fef89541d13e5786cbcfeb4c36a6e90e5e3955692"
+    },
+    "src/local-api/listing.ts": {
+      "upstream": "packages/local-api/src/listing.ts",
+      "upstream_sha256": "a863e9d953b19af2f836448560c9ffae61732dfb8b4cd2fec8c25d30c6e3a0d9",
+      "sha256": "a863e9d953b19af2f836448560c9ffae61732dfb8b4cd2fec8c25d30c6e3a0d9"
+    },
+    "src/local-api/protocol-events.ts": {
+      "upstream": "packages/local-api/src/protocol-events.ts",
+      "upstream_sha256": "0127b74f8c37dfd4b741b8b217c1fa445a029c3d5daf2cbd66f5dfeaf1ef1592",
+      "sha256": "0127b74f8c37dfd4b741b8b217c1fa445a029c3d5daf2cbd66f5dfeaf1ef1592"
+    },
+    "src/local-api/protocol.ts": {
+      "upstream": "packages/local-api/src/protocol.ts",
+      "upstream_sha256": "1d377cd6a74f8374488e8fd83f2d539c0ff3c29b268d850f8f10c84176570443",
+      "sha256": "1d377cd6a74f8374488e8fd83f2d539c0ff3c29b268d850f8f10c84176570443"
+    },
+    "src/local-api/transport.ts": {
+      "upstream": "packages/local-api/src/transport.ts",
+      "upstream_sha256": "f3f9be0e16c69eae7b0475822fd2c04aab92d89162a4535336029a566e028d6a",
+      "sha256": "f3f9be0e16c69eae7b0475822fd2c04aab92d89162a4535336029a566e028d6a"
+    },
+    "src/local-api/upload.ts": {
+      "upstream": "packages/local-api/src/upload.ts",
+      "upstream_sha256": "16226e5ca2f64ad0dc3dc3ee7d20f758fb9d7dd1b704874cd8619c7768ea426c",
+      "sha256": "c0e4b7667108777683a015b37b86847c31b46b5965b69a4d0ff8264968d9fbe3"
+    },
+    "src/local-api/validate-command.ts": {
+      "upstream": "packages/local-api/src/validate-command.ts",
+      "upstream_sha256": "e4fd976c7978999dc6c7b1ddc45c9093fb4b16f6a19b8d25ed81900ff36420d3",
+      "sha256": "7b1151cf18fc378c1642811ef29a59d2511782721736fa00661a0cc0268c363f"
+    },
+    "src/local-api/validate-events.ts": {
+      "upstream": "packages/local-api/src/validate-events.ts",
+      "upstream_sha256": "576fd2b882e42f1531030ec238063c938de80fadfbe95c20edcab46804eb6fc4",
+      "sha256": "4717fc6bda46069389f7da2db9a2eb774cfe0d831a76463a4dc1e5431408c93e"
+    },
+    "src/local-api/validate-fields.ts": {
+      "upstream": "packages/local-api/src/validate-fields.ts",
+      "upstream_sha256": "47444ac20e2369ce6a54cb2d3b3bb7b0711cec596b7d7d0d093362b048ceecef",
+      "sha256": "47444ac20e2369ce6a54cb2d3b3bb7b0711cec596b7d7d0d093362b048ceecef"
+    },
+    "src/local-api/validate-requests.ts": {
+      "upstream": "packages/local-api/src/validate-requests.ts",
+      "upstream_sha256": "41f9eecf1f5f9ab397a0d83bf619e8007d589d933ec63fd13bc7260653afd088",
+      "sha256": "5f55df0e636bdb4a7b8402158ef7a85f4913166f3ee60dc9f959f2edb3e94fb8"
+    },
+    "src/local-api/validate-shapes.ts": {
+      "upstream": "packages/local-api/src/validate-shapes.ts",
+      "upstream_sha256": "3ea929608f47ff28b7207eca25b8650e54331cf39d53adc5db4903445eb39c77",
+      "sha256": "9f1f60f2ea39af25457920bd6fbb7bb29b37ec29ce7f67d69dd34678727185b2"
+    },
+    "src/local-api/validate-stream-events.ts": {
+      "upstream": "packages/local-api/src/validate-stream-events.ts",
+      "upstream_sha256": "6206a5f6137ee68d20087e50a7602d70d984615be27025405527354dfc66c33a",
+      "sha256": "6206a5f6137ee68d20087e50a7602d70d984615be27025405527354dfc66c33a"
+    },
+    "src/local-api/validate.ts": {
+      "upstream": "packages/local-api/src/validate.ts",
+      "upstream_sha256": "617c5a637e7ec828b37dd046912c9bf421ce14f2b264f6e1094362b64d9c95ee",
+      "sha256": "617c5a637e7ec828b37dd046912c9bf421ce14f2b264f6e1094362b64d9c95ee"
+    },
+    "src/local-api/vocabulary.ts": {
+      "upstream": "packages/local-api/src/vocabulary.ts",
+      "upstream_sha256": "394fadaf1a7f78a9990eaae295dac6752a1d8db3803241d014e1d3c2fcb0d0bf",
+      "sha256": "394fadaf1a7f78a9990eaae295dac6752a1d8db3803241d014e1d3c2fcb0d0bf"
+    },
+    "test/local-api/conformance.test.ts": {
+      "upstream": "packages/local-api/test/conformance.test.ts",
+      "upstream_sha256": "de475b2ae1c56cd8905e362ff597c4c06163c55dd69b846cd6a28757a4e426ca",
+      "sha256": "2ce9a6a683bc571ba8f0ccd9f5cbea671b912bedd2baf823ec1c64398a715646"
+    },
+    "test/local-api/conformance/fake-owner-handlers.ts": {
+      "upstream": "packages/local-api/test/conformance/fake-owner-handlers.ts",
+      "upstream_sha256": "fed1ddaf07772bc6fcb9cdac99e62f8c9870522dd3b9b7317ec29ab5ab05db33",
+      "sha256": "5f8bbc5745045856f4bb8db7fb6cd32de49bbf1e4312ba1bddb00213c9c78ecf"
+    },
+    "test/local-api/conformance/fake-owner-history.ts": {
+      "upstream": "packages/local-api/test/conformance/fake-owner-history.ts",
+      "upstream_sha256": "45a348ef1f614041687f919fb8a1627566e250af657e709fb2550014bff1c1aa",
+      "sha256": "aedf6b36949c17034591b8428ef8e3fa580b83fa5960b7c1ca91241d9f144b8e"
+    },
+    "test/local-api/conformance/fake-owner-sessions.ts": {
+      "upstream": "packages/local-api/test/conformance/fake-owner-sessions.ts",
+      "upstream_sha256": "1f8a75ef4c7581bfee2ed4b27ecc023e75da25cfa884f707f479d9b9bcd41d5c",
+      "sha256": "0f8d3f0cd3b28d7192bb9142255d1db88566345b92b480e2408570543ff9308d"
+    },
+    "test/local-api/conformance/fake-owner-state.ts": {
+      "upstream": "packages/local-api/test/conformance/fake-owner-state.ts",
+      "upstream_sha256": "7c90ac71e5dc3c2dd2a7be457b66837537a5f1c1d945cddab78aa4d9bd0ef63e",
+      "sha256": "dd77719c9577f87d62bc82471bdff68c4ff2b2d67a2c1700e206a9ad517e46aa"
+    },
+    "test/local-api/conformance/fake-owner.ts": {
+      "upstream": "packages/local-api/test/conformance/fake-owner.ts",
+      "upstream_sha256": "c6b634a076f71fb1b43f2a31517dc4d460e6e725439bc82e0554c4c837519c10",
+      "sha256": "af2cd4d453a2662ad6daa7e85b822024a674803edf70ca0d44fea8470c772fa6"
+    },
+    "test/local-api/conformance/fixtures/authenticate.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/authenticate.json",
+      "upstream_sha256": "fec3c9d7e93775bf1cf862a93983618a075bb70b22777f827c0e2b4f24e5c9c3",
+      "sha256": "fec3c9d7e93775bf1cf862a93983618a075bb70b22777f827c0e2b4f24e5c9c3"
+    },
+    "test/local-api/conformance/fixtures/device.adopt.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/device.adopt.json",
+      "upstream_sha256": "de0c095c68e1dd5e8e3350b31e5ed59958cf01d5669871ff0e3dcf7da5de6962",
+      "sha256": "de0c095c68e1dd5e8e3350b31e5ed59958cf01d5669871ff0e3dcf7da5de6962"
+    },
+    "test/local-api/conformance/fixtures/device.forget.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/device.forget.json",
+      "upstream_sha256": "64f6230d894d3cde6883ab2de98a248ab8c6c1a141996ddbd1c55541f7cc1b1b",
+      "sha256": "64f6230d894d3cde6883ab2de98a248ab8c6c1a141996ddbd1c55541f7cc1b1b"
+    },
+    "test/local-api/conformance/fixtures/device.info.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/device.info.json",
+      "upstream_sha256": "fdbcfd54f54ffe5979bf78c034ca805c3fdc0498bfdb429dcb5ec947e23ba0f4",
+      "sha256": "fdbcfd54f54ffe5979bf78c034ca805c3fdc0498bfdb429dcb5ec947e23ba0f4"
+    },
+    "test/local-api/conformance/fixtures/devices.list.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/devices.list.json",
+      "upstream_sha256": "d8f2b5983ba0f2be4ea7341d2fb45f4d1c1a4ee1d6159a7c24ebe44276f35695",
+      "sha256": "d8f2b5983ba0f2be4ea7341d2fb45f4d1c1a4ee1d6159a7c24ebe44276f35695"
+    },
+    "test/local-api/conformance/fixtures/endpoints.register.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/endpoints.register.json",
+      "upstream_sha256": "e2432fae8582533f4daf39d97d8578d2ed70464034e32b90779c264d983b8fcc",
+      "sha256": "e2432fae8582533f4daf39d97d8578d2ed70464034e32b90779c264d983b8fcc"
+    },
+    "test/local-api/conformance/fixtures/endpoints.unregister.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/endpoints.unregister.json",
+      "upstream_sha256": "67b0dfe5872573dcb7f7705fe615e7bb855496390351ae69870e7eb6859e948d",
+      "sha256": "67b0dfe5872573dcb7f7705fe615e7bb855496390351ae69870e7eb6859e948d"
+    },
+    "test/local-api/conformance/fixtures/enforcement.report.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/enforcement.report.json",
+      "upstream_sha256": "d452cbaaada8fc89a51c8ef31a432749f43ffe59acc4b50fa31764b6bccfc9e2",
+      "sha256": "d452cbaaada8fc89a51c8ef31a432749f43ffe59acc4b50fa31764b6bccfc9e2"
+    },
+    "test/local-api/conformance/fixtures/hello.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/hello.json",
+      "upstream_sha256": "de0abcd47deaea2303be2151e233937c6199de2e2cb3952381e50c5eb47ddcd1",
+      "sha256": "de0abcd47deaea2303be2151e233937c6199de2e2cb3952381e50c5eb47ddcd1"
+    },
+    "test/local-api/conformance/fixtures/owner.shutdown_for_upgrade.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/owner.shutdown_for_upgrade.json",
+      "upstream_sha256": "c0ff3cb82bfbe55ca280e1eb67be56e5badb928e99fe75be22b34354b2d4b74e",
+      "sha256": "c0ff3cb82bfbe55ca280e1eb67be56e5badb928e99fe75be22b34354b2d4b74e"
+    },
+    "test/local-api/conformance/fixtures/refresher.register.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/refresher.register.json",
+      "upstream_sha256": "60c8913b2f5607648d75023185ba43f48d737a0ca96864958a1649b219912cd3",
+      "sha256": "60c8913b2f5607648d75023185ba43f48d737a0ca96864958a1649b219912cd3"
+    },
+    "test/local-api/conformance/fixtures/service.set_enabled.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/service.set_enabled.json",
+      "upstream_sha256": "589989cad95b0ca321372b9824bcf935e8fc41ed1e8484bb1323d1d46d030ddb",
+      "sha256": "589989cad95b0ca321372b9824bcf935e8fc41ed1e8484bb1323d1d46d030ddb"
+    },
+    "test/local-api/conformance/fixtures/session.attach.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/session.attach.json",
+      "upstream_sha256": "aa4595bcb6b0d30e0ab59e79ab7ba160c530e3e0d11db945b841b875d0076a24",
+      "sha256": "aa4595bcb6b0d30e0ab59e79ab7ba160c530e3e0d11db945b841b875d0076a24"
+    },
+    "test/local-api/conformance/fixtures/session.command.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/session.command.json",
+      "upstream_sha256": "8395ee0162d1c97a9866b10ca5f1d877b1949043cccfec8eee200429c7fba6cf",
+      "sha256": "8395ee0162d1c97a9866b10ca5f1d877b1949043cccfec8eee200429c7fba6cf"
+    },
+    "test/local-api/conformance/fixtures/session.command_part.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/session.command_part.json",
+      "upstream_sha256": "bd76e992b7d49f1c8dc857d985cba6963bff6ab7d378a2e28a5f7f3871b37e39",
+      "sha256": "bd76e992b7d49f1c8dc857d985cba6963bff6ab7d378a2e28a5f7f3871b37e39"
+    },
+    "test/local-api/conformance/fixtures/session.detach.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/session.detach.json",
+      "upstream_sha256": "59a0271824fa55f7dc9de3b1b9a03985546a97a10f602c37bcefb43afdba00ac",
+      "sha256": "59a0271824fa55f7dc9de3b1b9a03985546a97a10f602c37bcefb43afdba00ac"
+    },
+    "test/local-api/conformance/fixtures/session.read.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/session.read.json",
+      "upstream_sha256": "76795cc6bbea95f0e77073350795e96a2edcf91e650e7e0527385197f4e034cd",
+      "sha256": "76795cc6bbea95f0e77073350795e96a2edcf91e650e7e0527385197f4e034cd"
+    },
+    "test/local-api/conformance/fixtures/sessions.list.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/sessions.list.json",
+      "upstream_sha256": "0f9c4bc049da5ed0e50bbccd7d76be759c1832987b81e43bd14688dd7cd1f3bf",
+      "sha256": "0f9c4bc049da5ed0e50bbccd7d76be759c1832987b81e43bd14688dd7cd1f3bf"
+    },
+    "test/local-api/conformance/fixtures/status.get.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/status.get.json",
+      "upstream_sha256": "7f3bca822f6e01905e03d4bd607c9c8c6d7c2df1b9f0280f5005c987a854f3e2",
+      "sha256": "7f3bca822f6e01905e03d4bd607c9c8c6d7c2df1b9f0280f5005c987a854f3e2"
+    },
+    "test/local-api/conformance/fixtures/status.subscribe.json": {
+      "upstream": "packages/local-api/test/conformance/fixtures/status.subscribe.json",
+      "upstream_sha256": "2e534bd81da725394d15a4a7dc8a29022101bb2ebccde722f7bd77a2edeb0144",
+      "sha256": "2e534bd81da725394d15a4a7dc8a29022101bb2ebccde722f7bd77a2edeb0144"
+    },
+    "test/local-api/conformance/patterns.ts": {
+      "upstream": "packages/local-api/test/conformance/patterns.ts",
+      "upstream_sha256": "b2158e9f0ab6c43e65e7ed08401ffcc042fa3a98316f0dec5aa0e44afbe4ab24",
+      "sha256": "bb2ef3a4dc6822e5fe75c780a05c8ada5d91dfe9dd1cf34ba93138dfe088ea3e"
+    },
+    "test/local-api/conformance/raw-peer.ts": {
+      "upstream": "packages/local-api/test/conformance/raw-peer.ts",
+      "upstream_sha256": "1954a9aa47d42b85fbe93a673537848ecf72fe75471917e5a324f84b2ab1d228",
+      "sha256": "02f600cb388e36e145f7145e334a73451ce09c18eac67e88256275e6c801bf7b"
+    },
+    "test/local-api/conformance/rejection.ts": {
+      "upstream": "packages/local-api/test/conformance/rejection.ts",
+      "upstream_sha256": "8adc1a1339fa5347ced944408fd3f0fbbaf0639b8d45781aa36b7c031341d28a",
+      "sha256": "8adc1a1339fa5347ced944408fd3f0fbbaf0639b8d45781aa36b7c031341d28a"
+    },
+    "test/local-api/conformance/runner.ts": {
+      "upstream": "packages/local-api/test/conformance/runner.ts",
+      "upstream_sha256": "622af651ce932d95b82b94621d0272d36744e9e4b9f1a8df95f6303b5d339141",
+      "sha256": "fb25130cba0863e770a1cc47f9b25f2405032d7c79e02281db5a72d099be9c8e"
+    },
+    "test/local-api/conformance/world.ts": {
+      "upstream": "packages/local-api/test/conformance/world.ts",
+      "upstream_sha256": "20b49e4f315a07831246f2daa87f3cc1e0380ffb037b193c048bce9051f59594",
+      "sha256": "893a1c5f1f36d39a32ee02fe705f9a1c0615e985aa6004b361215ebe0748693a"
+    },
+    "test/local-api/dacl-verdict.test.ts": {
+      "upstream": "packages/local-api/test/dacl-verdict.test.ts",
+      "upstream_sha256": "e908157a0c7d9a4dc77c3d286fc72dabe9221097cd9fa736e1963ad760279a27",
+      "sha256": "f20fd73ee2efa67db1a3a77c63c80f09f5784523c29c9434fb72a30dc227ae5d"
+    },
+    "test/local-api/la1-version-refusal.test.ts": {
+      "upstream": "packages/local-api/test/la1-version-refusal.test.ts",
+      "upstream_sha256": "665fa8cde2340aa15bf5dbc8b694e935d277c6ce19ebdb00486b54cf2374786c",
+      "sha256": "9d3787d8e20fc026db1ec89b74dbbd49475b1634d97ff8d6f6aaf17fe689a235"
+    },
+    "test/local-api/la10-status-subscribe-replays.test.ts": {
+      "upstream": "packages/local-api/test/la10-status-subscribe-replays.test.ts",
+      "upstream_sha256": "ceeccddf4edc3f0c19604149c79a94c91944a39a4875d161e5b914178b142320",
+      "sha256": "ceeccddf4edc3f0c19604149c79a94c91944a39a4875d161e5b914178b142320"
+    },
+    "test/local-api/la11-command-without-attach.test.ts": {
+      "upstream": "packages/local-api/test/la11-command-without-attach.test.ts",
+      "upstream_sha256": "ce21116e0107a169a1a218abb40e9505e8e79293503c9c0eb2dfedef914ca3c9",
+      "sha256": "ce21116e0107a169a1a218abb40e9505e8e79293503c9c0eb2dfedef914ca3c9"
+    },
+    "test/local-api/la12-adopt-malformed-key.test.ts": {
+      "upstream": "packages/local-api/test/la12-adopt-malformed-key.test.ts",
+      "upstream_sha256": "728234655c76e3afebd2b7b5dae73308bb9f0f4a6db019526df31767a752ec54",
+      "sha256": "6c248285b19e4facbb29c5006dd810a94a2f93a4d8365b38fa88ea66634f43f2"
+    },
+    "test/local-api/la13-set-enabled-persisted.test.ts": {
+      "upstream": "packages/local-api/test/la13-set-enabled-persisted.test.ts",
+      "upstream_sha256": "5aeaf6439bcaf3eb947fce467108083c484cd3d8de899badfc47380984e409f3",
+      "sha256": "5aeaf6439bcaf3eb947fce467108083c484cd3d8de899badfc47380984e409f3"
+    },
+    "test/local-api/la14-round-device-states.test.ts": {
+      "upstream": "packages/local-api/test/la14-round-device-states.test.ts",
+      "upstream_sha256": "c264e6922d0f6b3c02c3c5d9d42e2d18c17ec9a27d4cf8409e9e676b3e2be9b1",
+      "sha256": "80524d32eb297dddde4ac6d38280696aa1a9d75e6ad2b06779888b0daf8d799b"
+    },
+    "test/local-api/la15-large-state-chunks.test.ts": {
+      "upstream": "packages/local-api/test/la15-large-state-chunks.test.ts",
+      "upstream_sha256": "350882e6e9a9724db625927e4ba18bfa31798271b8a692cb351bce61d7d75579",
+      "sha256": "a2ac9803bddaa7fea51f1041de5f4a3d89cd3d546f8327f038e4311aae59656c"
+    },
+    "test/local-api/la16-prompt-upload.test.ts": {
+      "upstream": "packages/local-api/test/la16-prompt-upload.test.ts",
+      "upstream_sha256": "fb514c538198b703634c0022c37cedb7375ad9d2fa53fd0646f44b7d8051675b",
+      "sha256": "317b8590a0f52d81b72902208c3eb2694bddd069774ff46f6d415ccd6102ea1c"
+    },
+    "test/local-api/la17-exact-windows-dacl.test.ts": {
+      "upstream": "packages/local-api/test/la17-exact-windows-dacl.test.ts",
+      "upstream_sha256": "48507563bff7ae72fa1fcdc521c790d99085806aad458ecaa9973d894e0bc2fa",
+      "sha256": "b3da30695d17f65096f03029f504af93c4bf48e04b49a55b4c582289532099d2"
+    },
+    "test/local-api/la18-shutdown-for-upgrade.test.ts": {
+      "upstream": "packages/local-api/test/la18-shutdown-for-upgrade.test.ts",
+      "upstream_sha256": "e651ced50fc562a847510fb497350e7d71fdc18318b9246dcd6c3a15ef6c29ec",
+      "sha256": "e0789f7608a426647467be19b6789221730c17a0e82315032e703a922ee1920c"
+    },
+    "test/local-api/la19-chunk-arithmetic.test.ts": {
+      "upstream": "packages/local-api/test/la19-chunk-arithmetic.test.ts",
+      "upstream_sha256": "16d1b8bb399f0ce6ecea6809dde29400af3e18f770430af42e257292a0dba40c",
+      "sha256": "2d57fb37d7c58b77bc4ee8be67c1ba197d4a8c51eeeb791db8d627f2a2207aff"
+    },
+    "test/local-api/la2-request-before-proof.test.ts": {
+      "upstream": "packages/local-api/test/la2-request-before-proof.test.ts",
+      "upstream_sha256": "33ec44379850f36df8f70f56e52689dcff39daeaa48a0d87ff07e5ab825c307c",
+      "sha256": "df2e40d46cf94df2771d8ae243fd1cf54cd553672181fb6a110ea41e7d1b63ae"
+    },
+    "test/local-api/la20-listing-pages.test.ts": {
+      "upstream": "packages/local-api/test/la20-listing-pages.test.ts",
+      "upstream_sha256": "05543b5c079ad10af7d6696936b6cd72097eda192d96a59aa555b4c3b1e5fab9",
+      "sha256": "0cdc6f2c338d52e3a4a47b406427b5417ccaf9884a522eda775299e266810bb6"
+    },
+    "test/local-api/la3-squatting-server.test.ts": {
+      "upstream": "packages/local-api/test/la3-squatting-server.test.ts",
+      "upstream_sha256": "2022a7b4a0d0bad70469a8f5fe713f276c21f3b03229ee2f257679a02eb318a7",
+      "sha256": "d835de7619f422179f5c48a234c0406abfd114e36e8e36544eac5500cccb7636"
+    },
+    "test/local-api/la4-wrong-client-proof.test.ts": {
+      "upstream": "packages/local-api/test/la4-wrong-client-proof.test.ts",
+      "upstream_sha256": "188028b3a36ac2aa9adf641c9da240be57666486e5425fae693b22748985f2e0",
+      "sha256": "3ee9d2d658bb425dc661638080a239617fa7b48ce19370543e0a1fa8b03e5612"
+    },
+    "test/local-api/la5-stale-token.test.ts": {
+      "upstream": "packages/local-api/test/la5-stale-token.test.ts",
+      "upstream_sha256": "04b0616dac8f022e3e1567b3d2c1d293e778620417b6d8791de769ce930d3550",
+      "sha256": "7c758c6383d100af43709e8db2c02fe4105ae68bf2137f4ed738f82462820b8a"
+    },
+    "test/local-api/la6-insecure-state-dir.test.ts": {
+      "upstream": "packages/local-api/test/la6-insecure-state-dir.test.ts",
+      "upstream_sha256": "01ae7ba8e7b3e7d30b4797dbee61c85af07360f0ebc9c29d08972f5da76436e8",
+      "sha256": "bd9ceee435c48eceebd70f07393a876f6e0744acbb73c7b8b4b4cdd054796bb6"
+    },
+    "test/local-api/la7-correlation.test.ts": {
+      "upstream": "packages/local-api/test/la7-correlation.test.ts",
+      "upstream_sha256": "5bb14a7f5eee804fc07adcc84e7f6c579a56034d036b6d716731bf9a7feb4560",
+      "sha256": "e8901b8c7e321c8a11c09ac6f5076c893e0ea32b28697fc801e1650fd6c9978e"
+    },
+    "test/local-api/la8-oversized-line.test.ts": {
+      "upstream": "packages/local-api/test/la8-oversized-line.test.ts",
+      "upstream_sha256": "6256dc3204ae017cdef3bfdaaddade1419b6a374b78df8581bec1181c142f13b",
+      "sha256": "718e91f764162f32490974bd7813036cca0566fbcc9e5a1a238a0c3d463a53a1"
+    },
+    "test/local-api/la9-every-event-validates.test.ts": {
+      "upstream": "packages/local-api/test/la9-every-event-validates.test.ts",
+      "upstream_sha256": "475d77334937b5bc60c382c5536ea943833a8df6d86a0e7a2d90e54f392eb516",
+      "sha256": "3806f049e74b19a311085ad68a93f69ebf46da3160073a8b7b4d4f6676b00c36"
+    },
+    "test/local-api/proof-vector.test.ts": {
+      "upstream": "packages/local-api/test/proof-vector.test.ts",
+      "upstream_sha256": "815f0222b210d316c4c93d7fd3e41350528911ad3468be5fe272c8e864059163",
+      "sha256": "68c7fa246618568f129defc2f97add6e58c82abf31aa02129b8e6145c82fea06"
+    },
+    "test/local-api/support-windows.ts": {
+      "upstream": "packages/local-api/test/support-windows.ts",
+      "upstream_sha256": "38642ead25f1b91490c6e956d54d35f92994e991e84fa4f658d9d7275bb91936",
+      "sha256": "89b299514829fe0110de8175b4ae1ac42152a885ab2566b65c4355a046eba1cd"
+    },
+    "test/local-api/support.ts": {
+      "upstream": "packages/local-api/test/support.ts",
+      "upstream_sha256": "346a54c61cfe66f82fd743e9b131f4ff81d705409246af2b5f18b64118a12879",
+      "sha256": "2ad110a640e008126e84c1b51c5ab02d16e5a8000ce0ab0f69ca29531710843a"
+    }
+  }
+}
